@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 920" role="img" aria-labelledby="title desc">
+  <title id="title">Windows and Active Directory detection lab logical topology</title>
+  <desc id="desc">Windows communicates with Samba AD and a controlled Kali HTTP receiver. Winlogbeat ships Security and Sysmon events; Suricata observes QEMU TAP traffic and Filebeat ships EVE and Samba logs to Elasticsearch and Kibana. Kali operator logs stay local to the operator and are manually correlated.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#52657a"/></marker>
+    <marker id="teal" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8Z" fill="#087e8b"/></marker>
+    <style>
+      .bg{fill:#f7f9fc}.title{font:700 31px system-ui,sans-serif;fill:#11243a}.subtitle{font:16px system-ui,sans-serif;fill:#52657a}
+      .panel{fill:#fff;stroke:#c8d3df;stroke-width:2}.paneltitle{font:700 20px system-ui,sans-serif;fill:#172b42}
+      .blue{fill:#edf4ff;stroke:#3977c3;stroke-width:2}.tealbox{fill:#e9f8f7;stroke:#16808a;stroke-width:2}.gray{fill:#f2f5f8;stroke:#748497;stroke-width:2}
+      .nodeTitle{font:700 17px system-ui,sans-serif;fill:#15283d}.body{font:14px system-ui,sans-serif;fill:#34475c}.small{font:13px system-ui,sans-serif;fill:#53667a}.tag{font:600 13px system-ui,sans-serif;fill:#087e8b}
+      .arrow{fill:none;stroke:#52657a;stroke-width:3;marker-end:url(#arrow)}.flow{fill:none;stroke:#087e8b;stroke-width:3;marker-end:url(#teal)}.observe{fill:none;stroke:#52657a;stroke-width:3;stroke-dasharray:9 7;marker-end:url(#arrow)}.manual{fill:none;stroke:#8a6bb5;stroke-width:2.5;stroke-dasharray:6 6;marker-end:url(#arrow)}
+      .label{font:13px system-ui,sans-serif;fill:#34475c;paint-order:stroke;stroke:#f7f9fc;stroke-width:7px;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect class="bg" width="1600" height="920"/>
+  <text class="title" x="48" y="54">Windows &amp; Active Directory Detection Engineering Lab</text>
+  <text class="subtitle" x="48" y="84">Logical components and observed telemetry paths · addresses are historical lab identifiers</text>
+
+  <!-- Windows endpoint -->
+  <rect class="panel" x="40" y="125" width="460" height="470" rx="18"/>
+  <text class="paneltitle" x="66" y="163">Windows domain workstation</text>
+  <text class="small" x="66" y="189">WIN-80AJQ4T6PA8 · CORP\belisarius · QEMU/KVM</text>
+  <rect class="blue" x="70" y="220" width="175" height="88" rx="14"/>
+  <text class="nodeTitle" x="92" y="255">LibreOffice</text><text class="body" x="92" y="282">ODT + Basic macro</text>
+  <rect class="tealbox" x="300" y="220" width="165" height="88" rx="14"/>
+  <text class="nodeTitle" x="321" y="255">PowerShell</text><text class="body" x="321" y="282">native lab actions</text>
+  <path class="arrow" d="M245 264H295"/>
+  <rect class="gray" x="70" y="365" width="395" height="105" rx="14"/>
+  <text class="nodeTitle" x="92" y="401">Windows event sources</text>
+  <text class="body" x="92" y="429">Security: 4688 / 5156</text>
+  <text class="body" x="92" y="452">Sysmon: Process / Registry events</text>
+  <text class="small" x="70" y="520">Guest address observed by WFP and Suricata:</text>
+  <text class="nodeTitle" x="70" y="549">172.30.0.2</text>
+  <text class="small" x="70" y="575">QEMU guest address may change on VM recreation.</text>
+
+  <!-- AD and receiver -->
+  <rect class="panel" x="580" y="125" width="430" height="235" rx="18"/>
+  <text class="paneltitle" x="605" y="163">Samba Active Directory</text>
+  <rect class="tealbox" x="610" y="190" width="370" height="135" rx="14"/>
+  <text class="nodeTitle" x="635" y="225">DC1 · 10.200.77.10</text>
+  <text class="body" x="635" y="254">corp.detection.lab</text>
+  <text class="body" x="635" y="280">DNS · Kerberos · LDAP · SMB share</text>
+  <text class="tag" x="635" y="307">Sample Samba auth log observed in Elastic</text>
+
+  <rect class="panel" x="1080" y="125" width="475" height="235" rx="18"/>
+  <text class="paneltitle" x="1105" y="163">Controlled Kali HTTP receiver</text>
+  <rect class="blue" x="1110" y="190" width="415" height="86" rx="14"/>
+  <text class="nodeTitle" x="1135" y="225">10.200.78.20:8080</text>
+  <text class="body" x="1135" y="253">/stage · /checkin · /upload · /health</text>
+  <rect class="gray" x="1110" y="293" width="415" height="48" rx="12"/>
+  <text class="body" x="1135" y="323">Operator log and uploads: local-only; not shipped to Elastic</text>
+
+  <!-- Suricata -->
+  <rect class="panel" x="580" y="410" width="430" height="175" rx="18"/>
+  <text class="paneltitle" x="605" y="449">Network observation</text>
+  <rect class="tealbox" x="610" y="472" width="370" height="88" rx="14"/>
+  <text class="nodeTitle" x="635" y="507">Suricata on QEMU TAP</text>
+  <text class="body" x="635" y="535">EVE: alert · HTTP · flow · DNS · 9 lab signatures</text>
+
+  <!-- Collection pipeline -->
+  <rect class="gray" x="55" y="700" width="320" height="112" rx="16"/>
+  <text class="nodeTitle" x="82" y="739">Winlogbeat</text><text class="body" x="82" y="768">Security + Sysmon channels</text><text class="tag" x="82" y="793">winlogbeat-*</text>
+  <rect class="gray" x="455" y="700" width="350" height="112" rx="16"/>
+  <text class="nodeTitle" x="480" y="739">Filebeat</text><text class="body" x="480" y="768">Suricata EVE + Samba log files</text><text class="tag" x="480" y="793">filebeat-detection-lab-*</text>
+  <rect class="blue" x="900" y="700" width="285" height="112" rx="16"/>
+  <text class="nodeTitle" x="927" y="746">Elasticsearch</text><text class="body" x="927" y="777">searchable event store</text>
+  <rect class="tealbox" x="1270" y="700" width="280" height="112" rx="16"/>
+  <text class="nodeTitle" x="1297" y="746">Kibana</text><text class="body" x="1297" y="777">investigation and queries</text>
+
+  <!-- Activity and telemetry routes -->
+  <path class="arrow" d="M465 250C520 250 545 250 605 250"/><text class="label" x="497" y="236">DNS · domain queries · SMB</text>
+  <path class="arrow" d="M465 280C650 380 860 380 1105 245"/><text class="label" x="782" y="370">HTTP staging / check-in / upload</text>
+  <path class="observe" d="M430 307C510 350 540 430 605 495"/><text class="label" x="474" y="398">guest packets observed</text>
+  <path class="flow" d="M270 470V694"/>
+  <path class="flow" d="M450 470C450 585 340 610 340 694"/>
+  <path class="flow" d="M795 560V694"/><text class="label" x="808" y="628">EVE JSON</text>
+  <path class="flow" d="M965 326H1032V665H770V694"/><text class="label" x="1038" y="590" transform="rotate(-90 1038 590)">Samba log files</text>
+  <path class="flow" d="M375 756H895"/>
+  <path class="flow" d="M805 756H895"/>
+  <path class="flow" d="M1185 756H1265"/>
+  <path class="manual" d="M1315 340V635C1315 665 1408 663 1408 694"/><text class="label" x="1327" y="620">manual request-ID / hash correlation</text>
+
+  <text class="small" x="48" y="870">NAT observations differ: Suricata/WFP see guest 172.30.0.2; Kali receiver sees host kali-net source 10.200.78.1.</text>
+  <text class="small" x="48" y="895">Kali logs are not shipped to Elastic. The diagram documents telemetry paths, not a claim that every listed behavior was executed.</text>
+</svg>

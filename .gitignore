@@ -1,0 +1,11 @@
+.bundle/
+vendor/
+_site/
+.jekyll-cache/
+.jekyll-metadata
+*.log
+.env
+creds
+credentials
+*.pem
+*.key

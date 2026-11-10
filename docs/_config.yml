@@ -1,0 +1,13 @@
+title: Windows & Active Directory Detection Engineering Lab
+description: Evidence-led investigation of document-driven PowerShell, Active Directory discovery, controlled collection and transfer, user logon persistence, and firewall impairment.
+url: https://leshan3d.github.io
+baseurl: /windows-ad-detection-engineering-lab
+theme: jekyll-theme-cayman
+markdown: kramdown
+plugins:
+  - jekyll-seo-tag
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor

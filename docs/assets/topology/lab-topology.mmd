@@ -1,0 +1,41 @@
+%%{init: {"theme":"neutral", "themeVariables":{"fontSize":"18px"}, "flowchart":{"nodeSpacing":48,"rankSpacing":58,"curve":"basis"}}}%%
+flowchart TB
+  subgraph WIN[Windows domain workstation — WIN-80AJQ4T6PA8]
+    direction LR
+    ODT[LibreOffice ODT document] --> PS[PowerShell and native Windows tools]
+    SEC[Windows Security events]
+    SYS[Sysmon Operational events]
+    SEC --> WB[Winlogbeat]
+    SYS --> WB
+  end
+
+  subgraph SERVICES[Lab services]
+    direction LR
+    AD[Samba AD DC1<br/>corp.detection.lab<br/>DNS · Kerberos · LDAP · SMB share]
+    KALI[Kali operator<br/>HTTP service :8080<br/>stage · check-in · upload]
+  end
+  KLOG[operator.log and upload receipts<br/>local-only; not shipped to Elastic]
+
+  subgraph NETWORK[Network observation]
+    direction LR
+    SURI[Suricata sensor<br/>passive capture on QEMU TAP]
+    EVE[Suricata EVE JSON]
+    SURI -->|EVE records| EVE
+  end
+
+  subgraph PIPELINE[Central telemetry]
+    direction LR
+    FB[Filebeat]
+    ES[Elasticsearch<br/>winlogbeat-* · filebeat-detection-lab-*]
+    KIB[Kibana investigations]
+    FB --> ES --> KIB
+  end
+
+  PS -->|DNS / domain queries / SMB| AD
+  PS -->|HTTP requests| KALI
+  KALI --> KLOG
+  WIN -. observed guest packets .-> SURI
+  WB --> ES
+  EVE --> FB
+  AD -. Samba logs; sample ingestion verified .-> FB
+  KLOG -. manual correlation only; not shipped to ES .-> KIB
