@@ -538,16 +538,6 @@ The key analytical improvement is correlating behavior across sources. The Power
 
 The project demonstrates practical investigation skills: schema-aware searches, process ancestry reconstruction, network correlation through NAT, timestamp normalization, configuration troubleshooting, and evidence-based conclusions. Its value is the ability to explain why a conclusion follows from particular events—and what additional evidence would be needed for a stronger claim.
 
-## Interview discussion
-
-**What was the most important engineering fix?** Separating Sysmon event generation from Winlogbeat channel subscription. A running service was not sufficient proof of useful centralized visibility.
-
-**How did you prove the upload?** I linked the originating process to WFP connection data, grouped Suricata events for the connection, and compared the receiver's size and SHA-256 to the local archive. HTTP 200 alone would have been insufficient.
-
-**What was the most important false-positive lesson?** A process command line referencing a tool can be inspection activity. The NPPSpy search returned Test-Path and Notepad, so I documented those as investigation artifacts rather than credential capture.
-
-**What would you improve next?** Promote selected searches into versioned detection rules, validate them against ordinary administrative behavior, extend telemetry coverage based on explicit requirements, and measure alert latency and false positives. Those improvements are separate from claiming additional attack stages were performed.
-
 ## References
 
 - [Sysmon documentation](https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon)
